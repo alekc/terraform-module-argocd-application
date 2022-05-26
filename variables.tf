@@ -132,3 +132,7 @@ variable "wait_for_deletion" {
   description = "If set to true, will wait until the object is removed completely from kubernetes before proceeding further"
   default     = false
 }
+variable "skip_crd" {
+  default     = false
+  description = "If set to true, it will skip the deployment of crd entities from the helm chart"
+}

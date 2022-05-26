@@ -19,6 +19,7 @@ locals {
           releaseName = var.release_name == null ? var.name : var.release_name
           parameters  = local.helm_parameters
           values      = var.helm_values
+          skipCrds    = var.skip_crd
         } : null
       }
       destination = {
