@@ -60,7 +60,12 @@ variable "cascade_delete" {
 }
 variable "destination_server" {
   type        = string
-  description = ""
+  description = "Server specifies the URL of the target cluster and must be set to the Kubernetes control plane API"
+  default     = "https://kubernetes.default.svc"
+}
+variable "destination_server_name" {
+  type        = string
+  description = "Name is an alternate way of specifying the target cluster by its symbolic name"
   default     = "https://kubernetes.default.svc"
 }
 variable "namespace" {
