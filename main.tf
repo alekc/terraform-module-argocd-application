@@ -23,7 +23,8 @@ locals {
         } : null
       }
       destination = {
-        server    = var.destination_server
+        server    = var.destination_server_name != "" ? null : var.destination_server
+        name      = var.destination_server_name == "" ? null : var.destination_server_name
         namespace = var.namespace
       }
       ignoreDifferences = var.ignore_differences
