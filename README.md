@@ -33,7 +33,7 @@ No modules.
 | <a name="input_cascade_delete"></a> [cascade\_delete](#input\_cascade\_delete) | Set to true if this application should cascade delete | `bool` | `true` | no |
 | <a name="input_chart"></a> [chart](#input\_chart) | The name of the Helm chart | `string` | `null` | no |
 | <a name="input_destination_server"></a> [destination\_server](#input\_destination\_server) | Server specifies the URL of the target cluster and must be set to the Kubernetes control plane API | `string` | `"https://kubernetes.default.svc"` | no |
-| <a name="input_destination_server_name"></a> [destination\_server\_name](#input\_destination\_server\_name) | Name is an alternate way of specifying the target cluster by its symbolic name | `string` | `"https://kubernetes.default.svc"` | no |
+| <a name="input_destination_server_name"></a> [destination\_server\_name](#input\_destination\_server\_name) | Name is an alternate way of specifying the target cluster by its symbolic name | `string` | `""` | no |
 | <a name="input_helm_parameters"></a> [helm\_parameters](#input\_helm\_parameters) | Parameters that will override helm\_values | <pre>list(object({<br>    name : string,<br>    value : any,<br>    force_string : bool,<br>  }))</pre> | `[]` | no |
 | <a name="input_helm_values"></a> [helm\_values](#input\_helm\_values) | Helm values as a block of yaml | `any` | `null` | no |
 | <a name="input_ignore_differences"></a> [ignore\_differences](#input\_ignore\_differences) | Ignore differences at the specified json pointers | `list(any)` | `[]` | no |

@@ -66,7 +66,7 @@ variable "destination_server" {
 variable "destination_server_name" {
   type        = string
   description = "Name is an alternate way of specifying the target cluster by its symbolic name"
-  default     = "https://kubernetes.default.svc"
+  default     = ""
 }
 variable "namespace" {
   type        = string
