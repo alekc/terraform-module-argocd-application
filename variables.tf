@@ -82,6 +82,26 @@ variable "automated_self_heal" {
   description = "Specifies if partial app sync should be executed when resources are changed only in target Kubernetes cluster and no git change detected"
   default     = true
 }
+variable "server_side_apply" {
+  type        = bool
+  default     = false
+  description = "If true, Argo CD will use kubectl apply --server-side command to apply changes."
+}
+variable "apply_out_of_sync_only" {
+  type        = bool
+  default     = false
+  description = "Currently when syncing using auto sync Argo CD applies every object in the application. Turning on selective sync option which will sync only out-of-sync resources. "
+}
+variable "replace" {
+  type        = bool
+  default     = false
+  description = "If true, the Argo CD will use kubectl replace or kubectl create command to apply changes."
+}
+variable "fail_on_shared_resource" {
+  type        = bool
+  default     = false
+  description = "If true, the Argo CD will fail the sync whenever it finds a resource in the current Application that is already applied in the cluster by another Application."
+}
 variable "sync_options" {
   type        = list(string)
   description = "A list of sync options to apply to the application"
