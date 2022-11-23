@@ -48,6 +48,7 @@ variable "helm_values" {
 variable "name" {
   type        = string
   description = "The name of this application"
+  default     = ""
 }
 variable "project" {
   type        = string

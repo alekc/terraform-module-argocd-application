@@ -1,9 +1,10 @@
 locals {
+  name = coalesce(var.name, var.release_name, var.chart)
   manifest = {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
-      name       = var.name
+      name       = local.name
       namespace  = var.argocd_namespace
       labels     = local.labels
       finalizers = var.cascade_delete == true ? ["resources-finalizer.argocd.argoproj.io"] : []
@@ -16,7 +17,7 @@ locals {
         chart          = var.app_source == "helm" ? var.chart : null
         path           = var.path
         helm = var.app_source == "helm" ? {
-          releaseName = var.release_name == null ? var.name : var.release_name
+          releaseName = coalesce(var.release_name, local.name)
           parameters  = local.helm_parameters
           values      = var.helm_values
           skipCrds    = var.skip_crd
