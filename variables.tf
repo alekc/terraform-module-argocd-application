@@ -75,7 +75,7 @@ variable "namespace" {
 variable "automated_prune" {
   type        = bool
   description = "Specifies if resources should be pruned during auto-syncing"
-  default     = false
+  default     = true
 }
 variable "automated_self_heal" {
   type        = bool
