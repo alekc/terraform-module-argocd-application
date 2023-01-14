@@ -3,7 +3,7 @@ locals {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
-      name       = var.name
+      name       = var.name != "" ? var.name : (var.app_source == "helm" ? var.chart : "")
       namespace  = var.argocd_namespace
       labels     = local.labels
       finalizers = var.cascade_delete == true ? ["resources-finalizer.argocd.argoproj.io"] : []

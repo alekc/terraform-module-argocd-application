@@ -52,6 +52,7 @@ variable "name" {
 variable "project" {
   type        = string
   description = "The project that this ArgoCD application will be placed into."
+  default     = "default"
 }
 variable "cascade_delete" {
   type        = bool

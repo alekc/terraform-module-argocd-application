@@ -10,7 +10,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_kubectl"></a> [kubectl](#provider\_kubectl) | >= 2.0.0 |
+| <a name="provider_kubectl"></a> [kubectl](#provider\_kubectl) | 2.0.0 |
 
 ## Modules
 
@@ -29,7 +29,7 @@ No modules.
 | <a name="input_app_source"></a> [app\_source](#input\_app\_source) | Type of application source (helm, git) | `string` | `"helm"` | no |
 | <a name="input_apply_out_of_sync_only"></a> [apply\_out\_of\_sync\_only](#input\_apply\_out\_of\_sync\_only) | Currently when syncing using auto sync Argo CD applies every object in the application. Turning on selective sync option which will sync only out-of-sync resources. | `bool` | `false` | no |
 | <a name="input_argocd_namespace"></a> [argocd\_namespace](#input\_argocd\_namespace) | The name of the target ArgoCD Namespace | `string` | `"argocd"` | no |
-| <a name="input_automated_prune"></a> [automated\_prune](#input\_automated\_prune) | Specifies if resources should be pruned during auto-syncing | `bool` | `false` | no |
+| <a name="input_automated_prune"></a> [automated\_prune](#input\_automated\_prune) | Specifies if resources should be pruned during auto-syncing | `bool` | `true` | no |
 | <a name="input_automated_self_heal"></a> [automated\_self\_heal](#input\_automated\_self\_heal) | Specifies if partial app sync should be executed when resources are changed only in target Kubernetes cluster and no git change detected | `bool` | `true` | no |
 | <a name="input_cascade_delete"></a> [cascade\_delete](#input\_cascade\_delete) | Set to true if this application should cascade delete | `bool` | `true` | no |
 | <a name="input_chart"></a> [chart](#input\_chart) | The name of the Helm chart | `string` | `null` | no |
@@ -43,7 +43,7 @@ No modules.
 | <a name="input_name"></a> [name](#input\_name) | The name of this application | `string` | n/a | yes |
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | n/a | `string` | n/a | yes |
 | <a name="input_path"></a> [path](#input\_path) | n/a | `string` | `""` | no |
-| <a name="input_project"></a> [project](#input\_project) | The project that this ArgoCD application will be placed into. | `string` | n/a | yes |
+| <a name="input_project"></a> [project](#input\_project) | The project that this ArgoCD application will be placed into. | `string` | `"default"` | no |
 | <a name="input_release_name"></a> [release\_name](#input\_release\_name) | Release name override (defaults to application name) | `string` | `null` | no |
 | <a name="input_replace"></a> [replace](#input\_replace) | If true, the Argo CD will use kubectl replace or kubectl create command to apply changes. | `bool` | `false` | no |
 | <a name="input_repo_url"></a> [repo\_url](#input\_repo\_url) | Source of the Helm application manifests | `string` | n/a | yes |
