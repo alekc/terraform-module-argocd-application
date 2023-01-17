@@ -40,7 +40,7 @@ No modules.
 | <a name="input_helm_values"></a> [helm\_values](#input\_helm\_values) | Helm values as a block of yaml | `any` | `null` | no |
 | <a name="input_ignore_differences"></a> [ignore\_differences](#input\_ignore\_differences) | Ignore differences at the specified json pointers | `list(any)` | `[]` | no |
 | <a name="input_labels"></a> [labels](#input\_labels) | n/a | `map(string)` | `{}` | no |
-| <a name="input_name"></a> [name](#input\_name) | The name of this application | `string` | n/a | yes |
+| <a name="input_name"></a> [name](#input\_name) | The name of this application | `string` | `""` | no |
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | n/a | `string` | n/a | yes |
 | <a name="input_path"></a> [path](#input\_path) | n/a | `string` | `""` | no |
 | <a name="input_project"></a> [project](#input\_project) | The project that this ArgoCD application will be placed into. | `string` | `"default"` | no |
