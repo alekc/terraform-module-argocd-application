@@ -163,3 +163,8 @@ variable "skip_crd" {
   default     = false
   description = "If set to true, it will skip the deployment of crd entities from the helm chart"
 }
+variable "annotations" {
+  type = map(string)
+  description = "Annotations for argocd Application"
+  default = {}
+}

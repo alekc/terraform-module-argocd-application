@@ -7,6 +7,7 @@ locals {
       namespace  = var.argocd_namespace
       labels     = local.labels
       finalizers = var.cascade_delete == true ? ["resources-finalizer.argocd.argoproj.io"] : []
+      annotations = var.annotations
     }
     spec = {
       project = var.project

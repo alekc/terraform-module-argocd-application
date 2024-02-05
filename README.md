@@ -10,7 +10,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_kubectl"></a> [kubectl](#provider\_kubectl) | 2.0.0 |
+| <a name="provider_kubectl"></a> [kubectl](#provider\_kubectl) | >= 2.0.0 |
 
 ## Modules
 
@@ -26,6 +26,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_annotations"></a> [annotations](#input\_annotations) | Annotations for argocd Application | `map(string)` | `{}` | no |
 | <a name="input_app_source"></a> [app\_source](#input\_app\_source) | Type of application source (helm, git) | `string` | `"helm"` | no |
 | <a name="input_apply_out_of_sync_only"></a> [apply\_out\_of\_sync\_only](#input\_apply\_out\_of\_sync\_only) | Currently when syncing using auto sync Argo CD applies every object in the application. Turning on selective sync option which will sync only out-of-sync resources. | `bool` | `false` | no |
 | <a name="input_argocd_namespace"></a> [argocd\_namespace](#input\_argocd\_namespace) | The name of the target ArgoCD Namespace | `string` | `"argocd"` | no |
