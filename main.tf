@@ -52,7 +52,6 @@ locals {
           }
         }
       }
-      ignoreDifferences = var.ignore_differences
     }
   }
 }
