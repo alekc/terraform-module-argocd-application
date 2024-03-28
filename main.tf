@@ -3,10 +3,10 @@ locals {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
     metadata = {
-      name       = var.name != "" ? var.name : (var.app_source == "helm" ? var.chart : "")
-      namespace  = var.argocd_namespace
-      labels     = local.labels
-      finalizers = var.cascade_delete == true ? ["resources-finalizer.argocd.argoproj.io"] : []
+      name        = var.name != "" ? var.name : (var.app_source == "helm" ? var.chart : "")
+      namespace   = var.argocd_namespace
+      labels      = local.labels
+      finalizers  = var.cascade_delete == true ? ["resources-finalizer.argocd.argoproj.io"] : []
       annotations = var.annotations
     }
     spec = {
@@ -17,10 +17,13 @@ locals {
         chart          = var.app_source == "helm" ? var.chart : null
         path           = var.path
         helm = var.app_source == "helm" ? {
-          releaseName = var.release_name == null ? var.name : var.release_name
-          parameters  = local.helm_parameters
-          values      = var.helm_values
-          skipCrds    = var.skip_crd
+          releaseName             = var.release_name == null ? var.name : var.release_name
+          parameters              = local.helm_parameters
+          values                  = var.helm_values
+          valuesObject            = var.helm_values_object
+          skipCrds                = var.skip_crd
+          fileParameters          = var.helm_files_parameters
+          ignoreMissingValueFiles = var.helm_ignore_missing_values
         } : null
       }
       destination = {

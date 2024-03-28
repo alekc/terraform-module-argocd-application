@@ -164,7 +164,30 @@ variable "skip_crd" {
   description = "If set to true, it will skip the deployment of crd entities from the helm chart"
 }
 variable "annotations" {
-  type = map(string)
+  type        = map(string)
   description = "Annotations for argocd Application"
-  default = {}
+  default     = {}
+}
+variable "helm_files_parameters" {
+  type = list(object({
+    name : string,
+    path : bool,
+  }))
+  default     = []
+  description = "Use the contents of files as parameters (uses Helm's --set-file)"
+}
+variable "helm_values_files" {
+  type        = list(string)
+  default     = []
+  description = "Helm values files for overriding values in the helm chart. The path is relative to the var.path directory defined above"
+}
+variable "helm_values_object" {
+  type        = any
+  default     = {}
+  description = "Values file as block file. This takes precedence over values"
+}
+variable "helm_ignore_missing_values" {
+  type        = bool
+  default     = false
+  description = "Ignore locally missing valueFiles when installing Helm chart"
 }
