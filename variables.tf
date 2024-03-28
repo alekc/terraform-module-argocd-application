@@ -173,17 +173,17 @@ variable "helm_files_parameters" {
     name : string,
     path : bool,
   }))
-  default     = []
+  default     = null
   description = "Use the contents of files as parameters (uses Helm's --set-file)"
 }
 variable "helm_values_files" {
   type        = list(string)
-  default     = []
+  default     = null
   description = "Helm values files for overriding values in the helm chart. The path is relative to the var.path directory defined above"
 }
 variable "helm_values_object" {
   type        = any
-  default     = {}
+  default     = null
   description = "Values file as block file. This takes precedence over values"
 }
 variable "helm_ignore_missing_values" {
