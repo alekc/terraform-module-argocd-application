@@ -41,7 +41,7 @@ variable "helm_parameters" {
   default     = []
 }
 variable "helm_values" {
-  type        = any
+  type        = string
   description = "Helm values as a block of yaml"
   default     = null
 }
@@ -190,4 +190,11 @@ variable "helm_ignore_missing_values" {
   type        = bool
   default     = false
   description = "Ignore locally missing valueFiles when installing Helm chart"
+}
+variable "managed_namespace_metadata" {
+  type = object({
+    labels : optional(map(string), {})
+    annotations : optional(map(string), {})
+  })
+  default = null
 }

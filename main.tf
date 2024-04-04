@@ -32,29 +32,34 @@ locals {
         namespace = var.namespace
       }
       ignoreDifferences = var.ignore_differences
-      syncPolicy = {
-        automated = {
-          prune    = var.automated_prune
-          selfHeal = var.automated_self_heal
-        }
-        // https://argo-cd.readthedocs.io/en/latest/user-guide/sync-options/
-        syncOptions = concat(var.sync_options, [
-          var.sync_option_validate ? "Validate=true" : "Validate=false",
-          var.sync_option_create_namespace ? "CreateNamespace=true" : "CreateNamespace=false",
-          var.server_side_apply ? "ServerSideApply=true" : "ServerSideApply=false",
-          var.apply_out_of_sync_only ? "ApplyOutOfSyncOnly=true" : "ApplyOutOfSyncOnly=false",
-          var.replace ? "Replace=true" : "Replace=false",
-          var.fail_on_shared_resource ? "FailOnSharedResource=true" : "FailOnSharedResource=false",
-        ])
-        retry = {
-          limit = var.retry_limit
-          backoff = {
-            duration    = var.retry_backoff_duration
-            factor      = var.retry_backoff_factor
-            maxDuration = var.retry_backoff_max_duration
+      syncPolicy = merge(
+        {
+          automated = {
+            prune    = var.automated_prune
+            selfHeal = var.automated_self_heal
           }
+          // https://argo-cd.readthedocs.io/en/latest/user-guide/sync-options/
+          syncOptions = concat(var.sync_options, [
+            var.sync_option_validate ? "Validate=true" : "Validate=false",
+            var.sync_option_create_namespace ? "CreateNamespace=true" : "CreateNamespace=false",
+            var.server_side_apply ? "ServerSideApply=true" : "ServerSideApply=false",
+            var.apply_out_of_sync_only ? "ApplyOutOfSyncOnly=true" : "ApplyOutOfSyncOnly=false",
+            var.replace ? "Replace=true" : "Replace=false",
+            var.fail_on_shared_resource ? "FailOnSharedResource=true" : "FailOnSharedResource=false",
+          ])
+          retry = {
+            limit = var.retry_limit
+            backoff = {
+              duration    = var.retry_backoff_duration
+              factor      = var.retry_backoff_factor
+              maxDuration = var.retry_backoff_max_duration
+            }
+          }
+        },
+        var.managed_namespace_metadata == null ? {} : {
+          managedNamespaceMetadata = var.managed_namespace_metadata
         }
-      }
+      )
     }
   }
 }
