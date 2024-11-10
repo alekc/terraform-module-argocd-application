@@ -1,4 +1,33 @@
 locals {
+  main_source = {
+    repoURL        = var.repo_url
+    targetRevision = var.target_revision
+    chart          = var.app_source == "helm" ? var.chart : null
+    path           = var.path
+    helm = var.app_source == "helm" ? {
+      releaseName             = var.release_name == null ? var.name : var.release_name
+      parameters              = local.helm_parameters
+      values                  = var.helm_values
+      valuesObject            = var.helm_values_object
+      skipCrds                = var.skip_crd
+      fileParameters          = var.helm_files_parameters
+      ignoreMissingValueFiles = var.helm_ignore_missing_values
+    } : null
+  }
+  additional_sources = var.additional_yaml_manifests == null ? [] : [{
+    repoURL        = "https://kiwigrid.github.io"
+    targetRevision = "0.1.0"
+    chart          = "any-resource"
+    helm = {
+      valuesObject = {
+        anyResources = var.additional_yaml_manifests
+      }
+    }
+  }]
+  sources = flatten([
+    [local.main_source], local.additional_sources
+  ])
+
   manifest = {
     apiVersion = "argoproj.io/v1alpha1"
     kind       = "Application"
@@ -11,21 +40,7 @@ locals {
     }
     spec = {
       project = var.project
-      source = {
-        repoURL        = var.repo_url
-        targetRevision = var.target_revision
-        chart          = var.app_source == "helm" ? var.chart : null
-        path           = var.path
-        helm = var.app_source == "helm" ? {
-          releaseName             = var.release_name == null ? var.name : var.release_name
-          parameters              = local.helm_parameters
-          values                  = var.helm_values
-          valuesObject            = var.helm_values_object
-          skipCrds                = var.skip_crd
-          fileParameters          = var.helm_files_parameters
-          ignoreMissingValueFiles = var.helm_ignore_missing_values
-        } : null
-      }
+      sources = local.sources
       destination = {
         server    = var.destination_server_name != "" ? null : var.destination_server
         name      = var.destination_server_name == "" ? null : var.destination_server_name

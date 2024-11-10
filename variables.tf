@@ -196,5 +196,11 @@ variable "managed_namespace_metadata" {
     labels : optional(map(string), {})
     annotations : optional(map(string), {})
   })
-  default = null
+  default     = null
+  description = "Namespace metadata to be applied to namespaces managed by ArgoCD"
+}
+variable "additional_yaml_manifests" {
+  type        = map(string)
+  default     = null
+  description = "Additional YAML manifests to be applied to the application"
 }
