@@ -52,7 +52,8 @@ locals {
     }
     spec = {
       project = var.project
-      sources = local.sources
+      sources = length(local.sources) > 1 ? local.sources : null
+      source  = length(local.sources) == 1 ? local.sources[0] : null
       destination = {
         server    = var.destination_server_name != "" ? null : var.destination_server
         name      = var.destination_server_name == "" ? null : var.destination_server_name
