@@ -1,20 +1,32 @@
+variable "automated_allow_empty" {
+  description = "Allows deleting all application resources during automatic syncing ( false by default )."
+  type        = bool
+  default     = false
+}
 locals {
   main_source = {
     repoURL        = var.repo_url
     targetRevision = var.target_revision
-    chart          = var.app_source == "helm" ? var.chart : null
+    chart          = var.chart
     path           = var.path
-    helm = var.app_source == "helm" ? {
-      releaseName             = var.release_name == null ? var.name : var.release_name
+    helm = var.chart != null ? {
+      passCredentials         = var.helm_pass_credentials
       parameters              = local.helm_parameters
+      fileParameters          = var.helm_files_parameters
+      releaseName             = var.release_name == null ? var.name : var.release_name
+      valueFiles              = var.helm_values_files
+      ignoreMissingValueFiles = var.helm_ignore_missing_values
       values                  = var.helm_values
       valuesObject            = var.helm_values_object
-      skipCrds                = var.skip_crd
-      fileParameters          = var.helm_files_parameters
-      ignoreMissingValueFiles = var.helm_ignore_missing_values
+      skipCrds                = var.helm_skip_crd
+      version                 = var.helm_version
+      kubeVersion             = var.helm_kube_version
+      apiVersions             = var.helm_api_versions
+      namespace               = var.helm_namespace
     } : null
   }
-  additional_sources = var.additional_yaml_manifests == null ? [] : [{
+  additional_sources = var.additional_sources == null ? [] : [for k, yaml_string in var.additional_sources : yamldecode(yaml_string)]
+  additional_manifests = var.additional_yaml_manifests == null ? [] : [{
     repoURL        = "https://kiwigrid.github.io"
     targetRevision = "0.1.0"
     chart          = "any-resource"
@@ -25,7 +37,7 @@ locals {
     }
   }]
   sources = flatten([
-    [local.main_source], local.additional_sources
+    [local.main_source], local.additional_manifests, local.additional_sources
   ])
 
   manifest = {
@@ -47,16 +59,19 @@ locals {
         namespace = var.namespace
       }
       ignoreDifferences = var.ignore_differences
+      info              = var.info
       syncPolicy = merge(
         {
           automated = {
-            prune    = var.automated_prune
-            selfHeal = var.automated_self_heal
+            prune      = var.automated_prune
+            selfHeal   = var.automated_self_heal
+            allowEmpty = var.automated_allow_empty
           }
           // https://argo-cd.readthedocs.io/en/latest/user-guide/sync-options/
           syncOptions = concat(var.sync_options, [
             var.sync_option_validate ? "Validate=true" : "Validate=false",
             var.sync_option_create_namespace ? "CreateNamespace=true" : "CreateNamespace=false",
+            var.prune_propagation_policy != null ? "PrunePropagationPolicy=${var.prune_propagation_policy}" : null,
             var.server_side_apply ? "ServerSideApply=true" : "ServerSideApply=false",
             var.apply_out_of_sync_only ? "ApplyOutOfSyncOnly=true" : "ApplyOutOfSyncOnly=false",
             var.replace ? "Replace=true" : "Replace=false",
@@ -78,6 +93,7 @@ locals {
     }
   }
 }
+
 resource "kubectl_manifest" "argo_application" {
   yaml_body = yamlencode(local.manifest)
   wait      = var.wait_for_deletion
