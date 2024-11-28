@@ -38,10 +38,10 @@ variable "helm_parameters" {
     force_string : bool,
   }))
   description = "Parameters that will override helm_values"
-  default     = []
+  default     = null
 }
 variable "helm_values" {
-  type        = any
+  type        = string
   description = "Helm values as a block of yaml"
   default     = null
 }
@@ -159,7 +159,7 @@ variable "wait_for_deletion" {
   description = "If set to true, will wait until the object is removed completely from kubernetes before proceeding further"
   default     = false
 }
-variable "skip_crd" {
+variable "helm_skip_crd" {
   default     = false
   description = "If set to true, it will skip the deployment of crd entities from the helm chart"
 }
@@ -190,4 +190,68 @@ variable "helm_ignore_missing_values" {
   type        = bool
   default     = false
   description = "Ignore locally missing valueFiles when installing Helm chart"
+}
+variable "managed_namespace_metadata" {
+  type = object({
+    labels : optional(map(string), {})
+    annotations : optional(map(string), {})
+  })
+  default     = null
+  description = "Namespace metadata to be applied to namespaces managed by ArgoCD"
+}
+variable "additional_yaml_manifests" {
+  type        = map(string)
+  default     = null
+  description = "Additional YAML manifests to be applied to the application"
+}
+variable "additional_sources" {
+  type        = map(string)
+  description = "Additional sources (in yaml manifests) to be applied to the application"
+  default     = null
+}
+variable "helm_pass_credentials" {
+  default     = null
+  type        = bool
+  description = "f true then adds --pass-credentials to Helm commands to pass credentials to all domains"
+}
+variable "helm_version" {
+  default     = null
+  type        = string
+  description = "Optional Helm version to template with. If omitted it will fall back to look at the 'apiVersion' in Chart.yaml and decide which Helm binary to use automatically. This field can be either 'v2' or 'v3'."
+  validation {
+    condition     = var.helm_version == null || var.helm_version == "v2" || var.helm_version == "v3"
+    error_message = "helm_version must be either 'v2' or 'v3'"
+  }
+}
+variable "helm_kube_version" {
+  description = "You can specify the Kubernetes API version to pass to Helm when templating manifests. By default, Argo CD uses the Kubernetes version of the target cluster. The value must be semver formatted. Do not prefix with `v`."
+  default     = null
+  type        = string
+}
+variable "helm_api_versions" {
+  description = "# You can specify the Kubernetes resource API versions to pass to Helm when templating manifests. By default, ArgoCD uses the API versions of the target cluster. The format is [group/]version/kind."
+  type        = list(string)
+  default     = null
+}
+variable "helm_namespace" {
+  description = "Optional namespace to template with. If left empty, defaults to the app's destination namespace."
+  type        = string
+  default     = null
+}
+variable "info" {
+  description = "Extra information to show in the Argo CD Application details tab"
+  type = list(object({
+    name : string
+    value : string
+  }))
+  default = null
+}
+variable "prune_propagation_policy" {
+  description = "Supported policies are background, foreground and orphan."
+  type        = string
+  default     = "foreground"
+  validation {
+    condition     = var.prune_propagation_policy == "foreground" || var.prune_propagation_policy == "background" || var.prune_propagation_policy == "orphan"
+    error_message = "Supported policies are background, foreground and orphan."
+  }
 }
